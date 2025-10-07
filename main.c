@@ -29,7 +29,9 @@ int main() {
             break;
         case 5:
             partialFrame();
-            topAdd(&head);
+            printf("Digite o valor a ser inserido: ");
+            scanf("%d", &value);
+            topAdd(&head, value);
             break;
         case 6:
             partialFrame();
@@ -37,7 +39,9 @@ int main() {
             break;
         case 7:
             partialFrame();
-            endAdd(head);
+            printf("Digite o valor a ser inserido: ");
+            scanf("%d", &value);
+            endAdd(head, value);
             break;
         case 8:
             partialFrame();
@@ -45,7 +49,7 @@ int main() {
             scanf("%d", &value);
             printf("Digite o index: ");
             scanf("%d", &index);
-            //addAnywhere(&head, value, index);
+            add(&head, value, index);
             break;
         case 9:
             partialFrame();
@@ -59,6 +63,12 @@ int main() {
             partialFrame();
             endRemove(head);
             break;
+        case 12:
+            partialFrame();
+            printf("Digite o index: ");
+            scanf("%d", &index);
+            removeAny(&head, index);
+            break;    
         default:
             leave = 1;
             break;

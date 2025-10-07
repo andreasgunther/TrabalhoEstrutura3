@@ -16,12 +16,13 @@ int getOption(Node *head) {
         printf("[ 5] Adicionar no inicio\n"); // topAdd()
         printf("[ 6] Adicionar no meio\n");   // middleAdd()
         printf("[ 7] Adicionar no fim\n");    // endAdd()
-        printf("[ 8] Adicionar por index\n"); // addAnywhere()
+        printf("[ 8] Adicionar\n");           // add()
         printf("[ 9] Remover do inicio\n");   // topRemove()
         printf("[10] Remover do meio\n");     // middleRemove()
         printf("[11] Remover do fim\n");      // endRemove()
+        printf("[12] Remover\n");             // removeAny()
     }
-    printf("[12] Encerrar o programa\n");
+    printf("[13] Encerrar o programa\n");
     printf("\n");
     printf("Digite: ");
     scanf("%d", &choice);
@@ -147,16 +148,13 @@ void search(Node *head, int value) {
     }
 }
 
-void topAdd(Node **head){
+void topAdd(Node **head, int value){
     Node *node = *head;
-    int num;
 
     (*head) = malloc(sizeof (Node *));
     (*head)->next = node;
-    printf("Insira o valor: ");
-    scanf("%d", &num);
-    (*head)->value = num;
-    printf("Numero %d adicionado com sucesso!", num);
+    (*head)->value = value;
+    printf("Numero %d adicionado com sucesso!", value);
 }
 
 void middleAdd(Node *head) {
@@ -188,16 +186,13 @@ void middleAdd(Node *head) {
     printf("Numero %d inserido com sucesso!", num);
 }
 
-void endAdd(Node *head) {
+void endAdd(Node *head, int value) {
     Node *node = head, *tmp;
-    int num;
 
     while (node->next != NULL) {
         node = node->next;
     }
 
-    printf("Insira o valor: ");
-    scanf("%d", &num);
     printf("Realizando alocacao...\n");
     tmp = malloc(sizeof (Node *));
     if (tmp == NULL) {
@@ -207,8 +202,8 @@ void endAdd(Node *head) {
     node->next = tmp;
     node = node->next;
     node->next = NULL;
-    node->value = num;
-    printf("Numero %d inserido com sucesso!", num);
+    node->value = value;
+    printf("Numero %d inserido com sucesso!", value);
 }
 
 void topRemove(Node **head) {
@@ -267,6 +262,74 @@ void endRemove(Node *head) {
     head->next = NULL;
 }
 
-void add(Node **head, int position) {
-    
+void add(Node **head, int value, int index) {
+    Node *node = (*head);
+    Node *aux = node, *tmp;
+    int cont, i = index;
+
+    cont = count(*head);
+    if (index >= cont) {
+        printf("Erro...\n");
+        printf("Index nao existente!");
+        return;
+    }
+
+    if (index == 0) {
+        topAdd(&(*head), value);
+        return;
+    } else if (index == cont - 1) {
+        endAdd(*head, value);
+        return;
+    }
+
+    while (index > 1) {
+        node = node->next;
+        index--;
+    }
+
+    aux = node->next;
+    tmp = malloc(sizeof (Node *));
+    if (tmp == NULL) {
+        printf("Erro de alocacao...");
+        return;
+    }
+    node->next = tmp;
+    tmp->value = value;
+    tmp->next = aux;
+
+    printf("Numero %d adicionado ao index %d com sucesso!", value, i);
+}
+
+void removeAny(Node **head, int index) {
+    Node *node = (*head);
+    Node *aux = node, *tmp;
+    int cont, i = index, value;
+
+    cont = count(*head);
+    if (index >= cont) {
+        printf("Erro...\n");
+        printf("Index nao existente!");
+        return;
+    }
+
+    if (index == 0) {
+        topRemove(&(*head));
+        return;
+    } else if (index == cont - 1) {
+        endRemove(*head);
+        return;
+    }
+
+    while (index > 1) {
+        node = node->next;
+        index--;
+    }
+
+    aux = node->next;
+    value = aux->value;
+    aux = aux->next;
+    free(node->next);
+    node->next = aux;
+
+    printf("Numero %d removido do index %d com sucesso!", value, i);
 }
